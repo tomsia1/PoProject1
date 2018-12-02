@@ -1,0 +1,8 @@
+available commands:
+help, load, clear_load, show, list, stat, top, reason, judge
+
+using command:
+:command <options> <args>
+
+get detailed command info by typing:
+:help <command1> <command2> (e.g :help show list judge)

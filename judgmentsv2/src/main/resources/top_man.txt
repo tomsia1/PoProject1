@@ -1,0 +1,5 @@
+options:
+-j=N -shows N judges who made the most verdicts
+-r=N -shows N mostly referenced regulations
+e.g:
+:top -j=3 -r=2

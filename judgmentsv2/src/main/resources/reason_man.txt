@@ -1,0 +1,2 @@
+shows reasoning for verdicts with given signatures, e.g:
+:show "signature 1" "signature 2"
