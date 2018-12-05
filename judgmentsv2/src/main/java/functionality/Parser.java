@@ -85,13 +85,13 @@ public class Parser {
                     orders=new Orders();
                 orders.append(arguments);
 
-               return "files loaded";
+               return "";
             }
 
             if (command.equals(":help"))
                 return help(arguments);
 
-            if (command.equals("clear_load"))
+            if (command.equals(":clear_load"))
             {
                 orders=null;
                 return "cleared";

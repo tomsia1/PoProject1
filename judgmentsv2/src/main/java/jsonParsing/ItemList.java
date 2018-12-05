@@ -2,6 +2,7 @@ package jsonParsing;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,6 +24,13 @@ public class ItemList {
         Gson gson=new Gson();
 
         return gson.fromJson(new FileReader(path), ItemList.class);
+    }
+
+    public static ItemList makeItemList(File file) throws IOException
+    {
+        Gson gson=new Gson();
+
+        return gson.fromJson(new FileReader(file), ItemList.class);
     }
 
 }

@@ -18,7 +18,9 @@ public class Orders {
     {
         for (String path: paths)
             if (!db.load(path))
-                System.out.println("nieprawidlowa sciezka: "+path+"\n");
+                System.out.println("nieprawidlowa sciezka: "+path);
+            else
+                System.out.println("wczytano: "+path);
     }
 
     public String listSignature()

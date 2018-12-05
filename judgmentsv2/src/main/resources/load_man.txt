@@ -1,2 +1,2 @@
-loads data from all given paths, eg:
+loads file from given path, if path leads to directory it load all json files from it with depth 1
 :load path1 path2 path3

@@ -4,8 +4,11 @@ import jsonParsing.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class DataStructure {
 
@@ -25,10 +28,26 @@ public class DataStructure {
     {
         File file=new File(path);
 
-        if (!file.exists() || !file.isFile())
+        if (!file.exists())
             return  false;
 
-        this.makeStructure(ItemList.makeItemList(path));
+        if (file.isFile())
+            this.makeStructure(ItemList.makeItemList(file));
+        else
+            {
+                    List<File> files=new LinkedList<>();
+                    Path p = Paths.get(path);
+                    try(Stream<Path> paths=Files.walk(p,1)) {
+                            paths
+                                .filter(pom -> pom.toFile().isFile())
+                                .filter(pom -> pom.toFile().getName().matches(".*\\.json$"))
+                                .forEach(pom -> files.add(pom.toFile()));
+                    }
+
+                    for (File f: files)
+                        this.makeStructure(ItemList.makeItemList(f.getAbsolutePath()));
+            }
+
         return true;
     }
 
