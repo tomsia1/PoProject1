@@ -1,4 +1,4 @@
-package functionality;
+package db;
 
 import db.DataStructure;
 import jsonParsing.CourtType;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Orders {
+public class DataBaseOrders {
 
     private DataStructure db=new DataStructure();
 

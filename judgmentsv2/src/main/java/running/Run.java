@@ -1,6 +1,8 @@
 package running;
 
+import functionality.Command;
 import functionality.Parser;
+import functionality.ShowCommand;
 
 import java.io.*;
 

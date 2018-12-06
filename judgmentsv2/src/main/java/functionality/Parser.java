@@ -1,13 +1,26 @@
 package functionality;
 
+import db.DataBaseOrders;
+
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class Parser {
-    private Orders orders=null;
+    private DataBaseOrders connector=null;
     Set<String> available_commands=new HashSet<>();
-    String manual;
-    Map<String,String> manualDetail=new HashMap<>();
+    Map<String,Command> commands=new HashMap<>();
+
+    public void setConnector (DataBaseOrders connector)
+    {
+        this.connector=connector;
+    }
+
+    public DataBaseOrders getConnector()
+    {
+        return this.connector;
+    }
 
     private List<String> split(String s)
     {
@@ -50,13 +63,33 @@ public class Parser {
 
     public Parser()
     {
-        available_commands.addAll(Arrays.asList(":load", ":show", ":clear_load", ":help", ":list", ":stat",":top",":judge",":reason"));
+        available_commands.addAll
+                (Arrays.asList(":load", ":show", ":clear_load", ":list", ":stat",":top",":judge",":reason"));
 
-        manual=FileStringParser.getStringFromFile("manual.txt");
+        String manual=FileStringParser.getStringFromFile("manual.txt");
+        Map<String,String> manualDetail=new HashMap<>();
 
         for (String cmd: available_commands.toArray(new String[0]))
-            if (!cmd.equals(":help"))
-                manualDetail.put(cmd.substring(1), FileStringParser.getStringFromFile(cmd.substring(1) + "_man.txt"));
+                manualDetail.put(cmd.substring(1),
+                        FileStringParser.getStringFromFile(cmd.substring(1) + "_man.txt"));
+
+        commands.put(":help",new HelpCommand(manual,manualDetail));
+
+        try {
+            for (String s : available_commands) {
+                String className ="functionality."+ Character.toUpperCase(s.charAt(1)) + s.substring(2) + "Command";
+
+                Class<?> klass = Class.forName(className);
+                Constructor<?> ctor=klass.getConstructor();
+                Command command=(Command) ctor.newInstance();
+                commands.put(s,command);
+            }
+        }catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException
+                | InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -66,137 +99,28 @@ public class Parser {
         if (input.size()!=0)
         {
             List<String> arguments=null;
-            String command=input.get(0);
+            String command_name=input.get(0);
             if (input.size()>1) {
                 arguments=new LinkedList<>();
                 arguments.addAll(input);
                 arguments.remove(0);
             }
 
-            if (!available_commands.contains(command))
-                return "invalid command";
+            Command command=commands.get(command_name);
 
-            if (command.equals(":load"))
-            {
-                if (arguments==null)
-                    return "enter load paths";
+            if (command==null)
+                return "no such command";
 
-                if (orders==null)
-                    orders=new Orders();
-                orders.append(arguments);
+            if (connector==null && command.isDataBaseRequired())
+                return "no files loaded";
 
-               return "";
-            }
+            if (arguments==null && command.areArgsRequired())
+                return "missing command options or arguments";
 
-            if (command.equals(":help"))
-                return help(arguments);
+            return command.execute(arguments,this);
 
-            if (command.equals(":clear_load"))
-            {
-                orders=null;
-                return "cleared";
-            }
-
-            if (orders==null)
-                return "no file loaded";
-
-            if (arguments==null)
-                return "missing command arguments";
-
-            if (command.equals(":show"))
-                return orders.showMetric(arguments);
-
-            if (command.equals(":list"))
-                return list(arguments);
-
-            if (command.equals(":stat"))
-                return stat(arguments);
-
-            if (command.equals(":reason"))
-                return orders.reason(arguments);
-
-            if (command.equals(":judge"))
-                return orders.judgesWithNumbers(arguments);
-
-            if (command.equals(":top"))
-                return top(arguments);
         }
         return null;
     }
 
-    private String top(List<String> args)
-    {
-        StringBuilder sb=new StringBuilder();
-        try
-        {
-            for (String s: args)
-            {
-                if (s.matches("^-r=.*"))
-                {
-                    int top=Integer.parseInt(s.substring(3));
-                    sb.append(orders.topRegulations(top));
-                }
-                else
-                    if (s.matches("^-j=.*"))
-                    {
-                        int top=Integer.parseInt(s.substring(3));
-                        sb.append(orders.employeesOfTheMonth(top));
-                    }
-                    else
-                        sb.append("invalid argument: "+s+"\n");
-            }
-        } catch (NumberFormatException e)
-        {
-            return "illegal number in top command";
-        }
-
-        return sb.toString();
-    }
-
-    private String help(List<String> arguments)
-    {
-        if (arguments==null)
-            return "\n"+manual;
-
-        StringBuilder sb=new StringBuilder("\n");
-        for (String s: arguments)
-            sb.append(s+":\n"+manualDetail.getOrDefault(s,"no such command")+"\n");
-
-        return sb.toString();
-    }
-
-    private String list(List<String> args)
-    {
-        StringBuilder sb=new StringBuilder("\n");
-
-        for (String s: args)
-        if (s.equals("-j"))
-            sb.append(orders.listJudges());
-        else
-            if (s.equals("-s"))
-                sb.append(orders.listSignature());
-            else
-                sb.append("invalid list argument: "+s+"\n");
-
-        return sb.toString();
-    }
-
-    private String stat(List<String> args)
-    {
-        StringBuilder sb=new StringBuilder("\n");
-
-        for (String s: args)
-            if (s.equals("-j"))
-                sb.append(orders.avarageNumberOfAnnMarieCheerfulInCourt());
-            else
-            if (s.equals("-m"))
-                sb.append(orders.monthlyStats());
-            else
-                if (s.equals("-t"))
-                    sb.append(orders.courtTypeStats());
-                else
-                    sb.append("invalid stat argument: "+s+"\n");
-
-        return sb.toString();
-    }
 }
