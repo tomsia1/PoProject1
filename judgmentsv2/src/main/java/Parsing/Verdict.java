@@ -1,4 +1,4 @@
-package jsonParsing;
+package Parsing;
 
 import com.google.gson.Gson;
 
@@ -6,32 +6,35 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Verdict {
-    private int id;
     private CourtType courtType;
     private CourtCase[] courtCases;
-    private JudgementType judgementType;
     private Judge[] judges;
-    private Source source;
-    private String[] courtReporters;
-    private String decision;
-    private String summary;
     private String textContent;
-    private String[] legalBases;
     private ReferencedRegulations[] referencedRegulations;
-    private String[] keywords;
-    private ReferencedCourtCases[] referencedCourtCases;
-    private String receiptDate;
-    private String meansOfAppeal;
-    private String judgementResult;
-    private String[] lowerCourtJudgments;
     private String judgmentDate;
+
+    public Verdict(){};
+
+    public Verdict (CourtCase[] signature, List<Judge> judges, String date,
+                    String reason,List<ReferencedRegulations> referencedRegulations)
+    {
+        courtType=CourtType.ADMINISTRATIVE;
+        courtCases=signature;
+        this.judges=judges.toArray(new Judge[judges.size()]);
+        judgmentDate=date;
+        textContent=reason;
+        this.referencedRegulations=referencedRegulations.
+                toArray(new ReferencedRegulations[referencedRegulations.size()]);
+    }
+
+    public void normalize()
+    {
+        for (ReferencedRegulations reg: this.referencedRegulations)
+            reg.normalize();
+    }
 
     public static Verdict makeVerdict(String path) throws IOException
     {

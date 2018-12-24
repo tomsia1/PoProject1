@@ -1,6 +1,6 @@
 package db;
 
-import jsonParsing.*;
+import Parsing.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class DataStructure {
 
-    private List<ItemList> allVerdicts;
+    private List<Verdict> allVerdicts;
     private Map<String ,Verdict> signatures;
     private Map<Judge, ArrayList<Verdict>> arbiters;
 
@@ -40,12 +40,14 @@ public class DataStructure {
                     try(Stream<Path> paths=Files.walk(p,1)) {
                             paths
                                 .filter(pom -> pom.toFile().isFile())
-                                .filter(pom -> pom.toFile().getName().matches(".*\\.json$"))
+                                .filter(pom -> pom.toFile().getName().matches(".*\\.json$")
+                                || pom.toFile().getName().matches(".*\\.html$")
+                                || pom.toFile().getName().matches(".*\\.htm$"))
                                 .forEach(pom -> files.add(pom.toFile()));
                     }
 
                     for (File f: files)
-                        this.makeStructure(ItemList.makeItemList(f.getAbsolutePath()));
+                        this.makeStructure(ItemList.makeItemList(f));
             }
 
         return true;
@@ -53,9 +55,9 @@ public class DataStructure {
 
     private void makeStructure(ItemList itemList)
     {
-        allVerdicts.add(itemList);
-
         for (Verdict verdict: itemList.getVerdicts()) {
+
+            allVerdicts.add(verdict);
 
             for (CourtCase courtCase: verdict.getCourtCases())
                 signatures.put(courtCase.getCaseNumber(),verdict);
@@ -121,9 +123,8 @@ public class DataStructure {
     public List<Verdict> listVerdicts()
     {
         List<Verdict> result=new LinkedList<>();
-        for (ItemList list: allVerdicts)
-            result.addAll(list.getVerdicts());
+        result.addAll(allVerdicts);
         return result;
-
     }
+
 }

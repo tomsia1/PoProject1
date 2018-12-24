@@ -9,8 +9,9 @@ import java.util.*;
 
 public class Parser {
     private DataBaseOrders connector=null;
-    Set<String> available_commands=new HashSet<>();
-    Map<String,Command> commands=new HashMap<>();
+    private Set<String> available_commands=new HashSet<>();
+    private Map<String,Command> commands=new HashMap<>();
+    private Map<String,String> cache;
 
     public void setConnector (DataBaseOrders connector)
     {
@@ -20,6 +21,13 @@ public class Parser {
     public DataBaseOrders getConnector()
     {
         return this.connector;
+    }
+
+    public void resetCache()
+    {
+        cache=new HashMap<>();
+        cache.put("esc","");
+        cache.put("","");
     }
 
     private List<String> split(String s)
@@ -63,21 +71,23 @@ public class Parser {
 
     public Parser()
     {
+        resetCache();
         available_commands.addAll
-                (Arrays.asList(":load", ":show", ":clear_load", ":list", ":stat",":top",":judge",":reason"));
+                (Arrays.asList("load", "rubrum", "clear_load", "list", "months","judges",
+                        "judge","content","regulations", "courts","jury"));
 
         String manual=FileStringParser.getStringFromFile("manual.txt");
         Map<String,String> manualDetail=new HashMap<>();
 
-        for (String cmd: available_commands.toArray(new String[0]))
-                manualDetail.put(cmd.substring(1),
-                        FileStringParser.getStringFromFile(cmd.substring(1) + "_man.txt"));
+        for (String cmd: available_commands)
+                manualDetail.put(cmd,
+                        FileStringParser.getStringFromFile(cmd + "_man.txt"));
 
-        commands.put(":help",new HelpCommand(manual,manualDetail));
+        commands.put("help",new HelpCommand(manual,manualDetail));
 
         try {
             for (String s : available_commands) {
-                String className ="functionality."+ Character.toUpperCase(s.charAt(1)) + s.substring(2) + "Command";
+                String className ="functionality."+ Character.toUpperCase(s.charAt(0)) + s.substring(1) + "Command";
 
                 Class<?> klass = Class.forName(className);
                 Constructor<?> ctor=klass.getConstructor();
@@ -95,6 +105,9 @@ public class Parser {
 
     public String parse(String s) throws IOException
     {
+        if (cache.containsKey(s))
+            return cache.get(s);
+
         List<String> input=split(s);
         if (input.size()!=0)
         {
@@ -117,7 +130,12 @@ public class Parser {
             if (arguments==null && command.areArgsRequired())
                 return "missing command options or arguments";
 
-            return command.execute(arguments,this);
+            String result=command.execute(arguments,this);
+
+            if (!(command instanceof LoadCommand) && !(command instanceof Clear_loadCommand))
+                cache.put(s,result);
+
+            return result;
 
         }
         return null;

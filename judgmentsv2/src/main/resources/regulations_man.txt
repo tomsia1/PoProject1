@@ -1,0 +1,3 @@
+shows mostly referred regulations (default 10, use option -n= for different number) e.g:
+regulations
+regulations -n=15

@@ -1,8 +1,9 @@
 available commands:
-help, load, clear_load, show, list, stat, top, reason, judge
+help, load, clear_load, rubrum, list, content, courts, judge, judges, jury,
+months, regulations
 
 using command:
-:command <options> <args>
+command <options> <args>
 
 get detailed command info by typing:
-:help <command1> <command2> (e.g :help show list judge)
+help <command1> <command2> (e.g help rubrum list judge)

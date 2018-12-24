@@ -1,2 +1,4 @@
-loads file from given path, if path leads to directory it load all json files from it with depth 1
-:load path1 path2 path3
+loads file from given paths, if path leads to directory it load all json and html
+files from it with depth 1 (please make sure that every json/html file in given directory has
+appropriate format). Usage:
+load path1 path2 path3

@@ -1,2 +1,2 @@
 shows metrics for verdicts with given signatures, e.g:
-:show "signature 1" "signature 2"
+rubrum "signatusre 1" "signature 2"

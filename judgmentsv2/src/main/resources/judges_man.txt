@@ -1,0 +1,3 @@
+shows list of most active judges (default 10, use option -n= for different number), e.g:
+judges
+judges -n=15

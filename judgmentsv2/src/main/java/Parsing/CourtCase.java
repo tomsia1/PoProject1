@@ -1,10 +1,15 @@
-package jsonParsing;
+package Parsing;
 
 import java.util.Objects;
 
 public class CourtCase
 {
     private String caseNumber;
+
+    public CourtCase(String signature)
+    {
+        this.caseNumber=signature;
+    }
 
     @Override
     public boolean equals(Object o) {

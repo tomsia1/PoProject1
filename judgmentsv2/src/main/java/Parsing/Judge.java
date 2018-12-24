@@ -1,4 +1,4 @@
-package jsonParsing;
+package Parsing;
 
 import java.util.Objects;
 
@@ -8,6 +8,13 @@ public class Judge
     private String name;
     private String function;
     private SpecialRole[] specialRoles;
+
+    public Judge(String name, String function)
+    {
+        this.name=name;
+        this.function=function;
+        specialRoles=null;
+    }
 
     @Override
     public boolean equals(Object o) {

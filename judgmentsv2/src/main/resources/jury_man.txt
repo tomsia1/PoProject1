@@ -1,0 +1,1 @@
+show statistics partitioned by number of judges in a court

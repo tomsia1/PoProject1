@@ -1,0 +1,1 @@
+shows statistics partitioned by court type

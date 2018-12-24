@@ -4,9 +4,9 @@ import db.DataBaseOrders;
 
 import java.util.List;
 
-public class ReasonCommand extends Command {
+public class ContentCommand extends Command {
 
-    public ReasonCommand()
+    public ContentCommand()
     {
         this.argsRequired=true;
         this.dataBaseRequired=true;

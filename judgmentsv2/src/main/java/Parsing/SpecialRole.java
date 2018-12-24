@@ -1,4 +1,4 @@
-package jsonParsing;
+package Parsing;
 
 enum SpecialRole
 {

@@ -13,6 +13,7 @@ public class Clear_loadCommand extends Command {
     public String execute(List<String> args, Parser parser)
     {
         parser.setConnector(null);
+        parser.resetCache();
         return "cleared";
     }
 }

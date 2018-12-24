@@ -1,2 +1,2 @@
 shows numbers of cases in which listed judges took part, e.g:
-:judge "Jakub Tomsia" "Hadolf Eatler" "Lukasz Niebochodzik"
+judge "Jakub Tomsia" "Hadolf Eatler" "Lukasz Niebochodzik"

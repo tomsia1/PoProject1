@@ -1,6 +1,0 @@
-options:
--j - shows statistics about number of judges participating in verdict
--m - shows statistics about month in which verdict was made
--t - shows statistics about type of the courts
-e.g:
-:stat -j -t

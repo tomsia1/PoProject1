@@ -2,4 +2,4 @@ options:
 -s -lists all signatures in loaded files
 -j -lists all judges names in loaded files
 e.g:
-:list -s -j
+list -s -j

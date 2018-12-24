@@ -19,6 +19,8 @@ public class LoadCommand extends Command {
            parser.setConnector(new DataBaseOrders());
        parser.getConnector().append(args);
 
+       parser.resetCache();
+
        return "";
    }
 }

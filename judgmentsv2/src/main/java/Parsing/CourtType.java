@@ -1,4 +1,4 @@
-package jsonParsing;
+package Parsing;
 
 public enum CourtType
 {
@@ -12,8 +12,7 @@ public enum CourtType
             case SUPREME: return "sad najwyzszy";
             case ADMINISTRATIVE: return "sad administracyjny";
             case CONSTITUTIONAL_TRIBUNAL: return "trybunal konstytucyjny";
-            case NATIONAL_APPEAL_CHAMBER: return "krajowa izba odwolawcza";
-            default: return "";
+            default: return "krajowa izba odwolawcza";
         }
     }
 }

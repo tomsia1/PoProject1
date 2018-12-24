@@ -5,6 +5,7 @@
       <element id="module-output" name="judgmentsv2" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/jline/jline/3.0.0.M1/jline-3.0.0.M1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

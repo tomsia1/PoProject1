@@ -1,10 +1,9 @@
 package db;
 
-import db.DataStructure;
-import jsonParsing.CourtType;
-import jsonParsing.Judge;
-import jsonParsing.ReferencedRegulations;
-import jsonParsing.Verdict;
+import Parsing.CourtType;
+import Parsing.Judge;
+import Parsing.ReferencedRegulations;
+import Parsing.Verdict;
 
 import java.io.IOException;
 import java.util.*;
@@ -52,7 +51,6 @@ public class DataBaseOrders {
 
         for (String signature: signatures)
         {
-            sb.append(signature+":\n");
             tmp=db.signatureMetric(signature);
             if (tmp==null)
                 sb.append("no such signature\n");

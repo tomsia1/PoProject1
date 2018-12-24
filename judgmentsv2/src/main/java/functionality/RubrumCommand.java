@@ -5,7 +5,7 @@ import db.DataBaseOrders;
 import java.io.IOException;
 import java.util.List;
 
-public class ShowCommand extends Command{
+public class RubrumCommand extends Command{
 
     public String execute (List<String> args, Parser parser)
     {
